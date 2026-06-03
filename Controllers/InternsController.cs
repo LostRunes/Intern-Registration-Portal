@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -175,6 +177,128 @@ namespace InternPortal.Controllers
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        // GET: Interns/UploadCsv
+        public IActionResult UploadCsv()
+        {
+            return View();
+        }
+
+        // POST: Interns/UploadCsv
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadCsv(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                TempData["ErrorMessage"] = "Please select a valid CSV file.";
+                return View();
+            }
+
+            try
+            {
+                using var reader = new StreamReader(file.OpenReadStream());
+                var headerLine = await reader.ReadLineAsync();
+                if (string.IsNullOrEmpty(headerLine))
+                {
+                    TempData["ErrorMessage"] = "The uploaded file is empty.";
+                    return View();
+                }
+
+                var headers = headerLine.Split(',').Select(h => h.Trim().ToUpper()).ToList();
+                int nameIndex = headers.IndexOf("NAME");
+                int contactIndex = headers.IndexOf("CONTACT");
+                int deptIndex = headers.IndexOf("DEPARTMENT");
+                int branchIndex = headers.IndexOf("BRANCH");
+                int durationIndex = headers.IndexOf("DURATIONMONTHS");
+                int mentorNameIndex = headers.IndexOf("MENTORNAME");
+                int mentorIdIndex = headers.IndexOf("MENTORID");
+
+                if (nameIndex == -1)
+                {
+                    TempData["ErrorMessage"] = "Required column 'Name' is missing in CSV header.";
+                    return View();
+                }
+
+                var mentors = await _context.Mentors.ToListAsync();
+                var defaultMentor = mentors.FirstOrDefault();
+                if (defaultMentor == null)
+                {
+                    TempData["ErrorMessage"] = "No mentors found in the database. Please seed mentors first.";
+                    return View();
+                }
+
+                var interns = new List<Intern>();
+                string? line;
+
+                while ((line = await reader.ReadLineAsync()) != null)
+                {
+                    if (string.IsNullOrWhiteSpace(line)) continue;
+
+                    var values = line.Split(',').Select(v => v.Trim()).ToArray();
+                    if (values.Length <= nameIndex || string.IsNullOrEmpty(values[nameIndex]))
+                    {
+                        continue;
+                    }
+
+                    string name = values[nameIndex];
+                    string contact = contactIndex != -1 && values.Length > contactIndex ? values[contactIndex] : "";
+                    string dept = deptIndex != -1 && values.Length > deptIndex ? values[deptIndex] : "";
+                    string branch = branchIndex != -1 && values.Length > branchIndex ? values[branchIndex] : "";
+                    
+                    int duration = 3;
+                    if (durationIndex != -1 && values.Length > durationIndex)
+                    {
+                        int.TryParse(values[durationIndex], out duration);
+                    }
+
+                    int mentorId = defaultMentor.Id;
+                    if (mentorIdIndex != -1 && values.Length > mentorIdIndex && int.TryParse(values[mentorIdIndex], out int mId))
+                    {
+                        if (mentors.Any(m => m.Id == mId))
+                        {
+                            mentorId = mId;
+                        }
+                    }
+                    else if (mentorNameIndex != -1 && values.Length > mentorNameIndex && !string.IsNullOrEmpty(values[mentorNameIndex]))
+                    {
+                        var mName = values[mentorNameIndex];
+                        var matchedMentor = mentors.FirstOrDefault(m => m.Name.Equals(mName, StringComparison.OrdinalIgnoreCase));
+                        if (matchedMentor != null)
+                        {
+                            mentorId = matchedMentor.Id;
+                        }
+                    }
+
+                    interns.Add(new Intern
+                    {
+                        Name = name,
+                        Contact = contact,
+                        Department = dept,
+                        Branch = branch,
+                        DurationMonths = duration,
+                        MentorId = mentorId
+                    });
+                }
+
+                if (interns.Any())
+                {
+                    _context.Interns.AddRange(interns);
+                    await _context.SaveChangesAsync();
+                    TempData["SuccessMessage"] = $"Successfully imported {interns.Count} interns!";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "No valid records were found in the CSV file.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Failed to parse CSV file: {ex.Message}";
+            }
+
+            return View();
         }
 
         private bool InternExists(int id)

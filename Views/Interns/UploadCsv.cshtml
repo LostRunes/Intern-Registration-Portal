@@ -1,0 +1,62 @@
+@{
+    ViewData["Title"] = "Import Interns via CSV";
+}
+
+<div class="container-fluid max-width-form mt-4">
+    <div class="card border-0 shadow-sm p-4">
+        <div class="card-body">
+            <h2 class="card-title mb-4 text-primary"><i class="bi bi-file-earmark-arrow-up-fill me-2"></i>Import Interns via CSV</h2>
+            <hr class="mb-4" />
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show rounded-3 mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>@TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show rounded-3 mb-4" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i>@TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="alert alert-info rounded-3 mb-4">
+                <h5 class="alert-heading font-weight-bold"><i class="bi bi-info-circle-fill me-2"></i>CSV File Requirements</h5>
+                <p class="mb-2">Your CSV file must include a header row. The supported columns are:</p>
+                <ul class="mb-0">
+                    <li><code>Name</code> (Required)</li>
+                    <li><code>Contact</code> (Optional/Required based on data validation)</li>
+                    <li><code>Department</code> (Optional)</li>
+                    <li><code>Branch</code> (Optional)</li>
+                    <li><code>DurationMonths</code> (Optional, integer)</li>
+                    <li><code>MentorName</code> or <code>MentorId</code> (Optional - matched against seeded mentors)</li>
+                </ul>
+            </div>
+
+            <!-- CSV Example Template -->
+            <div class="mb-4 p-3 bg-light rounded-3">
+                <div class="font-weight-bold text-muted font-size-sm mb-2 text-uppercase">Example CSV Content</div>
+                <pre class="mb-0 text-dark"><code>Name,Contact,Department,Branch,DurationMonths,MentorName
+John Doe,9876543210,IS,ECSC,6,Mentor 1
+Jane Smith,8765432109,HR,Delhi,3,Mentor 2</code></pre>
+            </div>
+
+            <!-- Upload Form -->
+            <form asp-action="UploadCsv" method="post" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="csvFile" class="form-label font-weight-bold text-muted">Select CSV File</label>
+                    <input type="file" id="csvFile" name="file" accept=".csv" class="form-control rounded-pill" required />
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4 rounded-pill">Upload & Import</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 rounded-pill">Back to Directory</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
