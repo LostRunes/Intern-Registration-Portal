@@ -1,0 +1,106 @@
+@model IEnumerable<InternPortal.Models.Intern>
+
+@{
+    ViewData["Title"] = "Manage Interns";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="text-dark font-weight-bold"><i class="bi bi-people-fill text-primary me-2"></i>Interns Directory</h1>
+    <a asp-action="Create" class="btn btn-primary px-4 rounded-pill shadow-sm"><i class="bi bi-person-plus-fill me-2"></i>Add Intern</a>
+</div>
+
+<!-- Filters & Search Card -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <form asp-action="Index" method="get">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                        <input type="text" name="searchString" value="@Context.Request.Query["searchString"]" class="form-control border-start-0" placeholder="Search by name...">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select name="mentorId" asp-items="ViewBag.MentorId" class="form-select">
+                        <option value="">-- All Mentors --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="department" asp-items="ViewBag.Departments" class="form-select">
+                        <option value="">-- All Depts --</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select name="branch" asp-items="ViewBag.Branches" class="form-select">
+                        <option value="">-- All Branches --</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <div class="btn-group gap-1">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-funnel-fill me-1"></i>Filter</button>
+                        <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-x-circle"></i></a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Table Card -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4">Name</th>
+                        <th>Contact</th>
+                        <th>Mentor</th>
+                        <th>Department</th>
+                        <th>Branch</th>
+                        <th>Duration</th>
+                        <th class="text-end pe-4">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">No interns found matching the criteria.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="ps-4 font-weight-bold text-dark">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle-sm bg-primary text-white me-2">
+                                            @item.Name.Substring(0, Math.Min(item.Name.Length, 1)).ToUpper()
+                                        </div>
+                                        @item.Name
+                                    </div>
+                                </td>
+                                <td>@item.Contact</td>
+                                <td>
+                                    <span class="badge bg-light text-dark border"><i class="bi bi-person-fill text-muted me-1"></i>@(item.Mentor?.Name ?? "Unassigned")</span>
+                                </td>
+                                <td>@item.Department</td>
+                                <td>@item.Branch</td>
+                                <td>@item.DurationMonths Months</td>
+                                <td class="text-end pe-4">
+                                    <div class="btn-group gap-1">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm rounded-pill px-3"><i class="bi bi-pencil me-1"></i>Edit</a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm rounded-pill px-3"><i class="bi bi-info-circle me-1"></i>Details</a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm rounded-pill px-3"><i class="bi bi-trash me-1"></i>Delete</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

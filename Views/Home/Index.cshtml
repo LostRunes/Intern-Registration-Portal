@@ -1,0 +1,109 @@
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="mb-4">
+    <h1 class="text-dark font-weight-bold"><i class="bi bi-speedometer2 text-primary me-2"></i>Dashboard Overview</h1>
+    <p class="text-muted">Welcome to the IOCL Intern Portal management system.</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm card-hover h-100 bg-white">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="rounded-3 p-3 bg-primary-light text-primary me-3">
+                    <i class="bi bi-people-fill fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-uppercase tracking-wider">Total Interns</h6>
+                    <h2 class="mb-0 font-weight-bold text-dark">@ViewBag.TotalInterns</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm card-hover h-100 bg-white">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="rounded-3 p-3 bg-success-light text-success me-3">
+                    <i class="bi bi-calendar-check-fill fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-uppercase tracking-wider">Present Today</h6>
+                    <h2 class="mb-0 font-weight-bold text-dark">@ViewBag.PresentToday</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm card-hover h-100 bg-white">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="rounded-3 p-3 bg-info-light text-info me-3">
+                    <i class="bi bi-person-workspace fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-uppercase tracking-wider">Total Mentors</h6>
+                    <h2 class="mb-0 font-weight-bold text-dark">@ViewBag.TotalMentors</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm card-hover h-100 bg-white">
+            <div class="card-body p-4 d-flex align-items-center">
+                <div class="rounded-3 p-3 bg-warning-light text-warning me-3">
+                    <i class="bi bi-percent fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="text-muted mb-1 text-uppercase tracking-wider">Attendance Rate</h6>
+                    <h2 class="mb-0 font-weight-bold text-dark">@ViewBag.AttendanceRate%</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Details Area -->
+<div class="row g-4">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm p-4 h-100 bg-white">
+            <h5 class="card-title font-weight-bold mb-4 text-dark"><i class="bi bi-arrow-right-circle text-primary me-2"></i>Quick Actions</h5>
+            <div class="row g-3">
+                <div class="col-sm-6">
+                    <a href="/Interns/Create" class="btn btn-outline-primary w-100 py-3 rounded-3 text-start px-3 d-flex align-items-center">
+                        <i class="bi bi-person-plus-fill fs-4 me-3"></i>
+                        <div>
+                            <div class="font-weight-bold text-dark">Add New Intern</div>
+                            <span class="text-muted font-size-sm">Register new intake profile</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="/Attendance" class="btn btn-outline-success w-100 py-3 rounded-3 text-start px-3 d-flex align-items-center">
+                        <i class="bi bi-check2-square fs-4 me-3"></i>
+                        <div>
+                            <div class="font-weight-bold text-dark">Record Attendance</div>
+                            <span class="text-muted font-size-sm">Update today's attendance</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm p-4 h-100 bg-white text-center d-flex flex-column justify-content-center align-items-center">
+            <div class="logo-box mb-3">
+                <!-- Simple stylized IOCL themed logo graphic -->
+                <div class="d-inline-block rounded-circle bg-primary-light p-4">
+                    <i class="bi bi-building-fill text-primary fs-1"></i>
+                </div>
+            </div>
+            <h5 class="font-weight-bold mb-1 text-dark">IOCL Intern Management</h5>
+            <p class="text-muted font-size-sm px-3">Easily manage intern rosters, coordinate with staff mentors, and track evolution of daily attendance scores.</p>
+        </div>
+    </div>
+</div>

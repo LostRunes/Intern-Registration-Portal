@@ -1,0 +1,124 @@
+/* Core Styles & Typography */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F5F7FA;
+    color: #1E293B;
+    overflow-x: hidden;
+}
+
+/* Sidebar Design */
+.sidebar {
+    background: linear-gradient(180deg, #0070C0 0%, #004B87 100%);
+    width: 260px;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 768px) {
+    .sidebar {
+        min-height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    padding: 0.8rem 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.sidebar .nav-link.active {
+    background-color: #F37021 !important; /* Orange Accent */
+    box-shadow: 0 4px 12px rgba(243, 112, 33, 0.3);
+}
+
+/* Cards & Containers */
+.card {
+    border-radius: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Form Styles */
+.form-control, .form-select {
+    padding: 0.75rem 1.25rem;
+    border-color: #E2E8F0;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0070C0;
+    box-shadow: 0 0 0 3px rgba(0, 112, 192, 0.15);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #F37021;
+    border-color: #F37021;
+    font-weight: 500;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: #D85A12 !important;
+    border-color: #D85A12 !important;
+}
+
+.btn-outline-primary {
+    color: #F37021;
+    border-color: #F37021;
+}
+
+.btn-outline-primary:hover {
+    background-color: #F37021;
+    border-color: #F37021;
+}
+
+/* Colors and Custom Backgrounds */
+.bg-primary-light {
+    background-color: rgba(0, 112, 192, 0.1);
+}
+
+.bg-success-light {
+    background-color: rgba(40, 167, 69, 0.1);
+}
+
+.bg-info-light {
+    background-color: rgba(23, 162, 184, 0.1);
+}
+
+.bg-warning-light {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+/* Form Width Limit */
+.max-width-form {
+    max-width: 800px;
+}
+
+.border-danger-top {
+    border-top: 4px solid #dc3545;
+}
+
+/* Avatar Circles */
+.avatar-circle-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+}

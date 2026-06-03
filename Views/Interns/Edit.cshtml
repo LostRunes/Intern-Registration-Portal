@@ -1,0 +1,70 @@
+@model InternPortal.Models.Intern
+
+@{
+    ViewData["Title"] = "Edit Intern Profile";
+}
+
+<div class="container-fluid max-width-form mt-4">
+    <div class="card border-0 shadow-sm p-4">
+        <div class="card-body">
+            <h2 class="card-title mb-4 text-primary"><i class="bi bi-pencil-square me-2"></i>Edit Intern Profile</h2>
+            <hr class="mb-4" />
+            
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                <input type="hidden" asp-for="Id" />
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Name" class="form-label font-weight-bold">Name</label>
+                        <input asp-for="Name" class="form-control rounded-pill" placeholder="Enter full name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Contact" class="form-label font-weight-bold">Contact</label>
+                        <input asp-for="Contact" class="form-control rounded-pill" placeholder="Enter contact number" />
+                        <span asp-validation-for="Contact" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MentorId" class="form-label font-weight-bold">Assign Mentor</label>
+                        <select asp-for="MentorId" asp-items="ViewBag.MentorId" class="form-select rounded-pill"></select>
+                        <span asp-validation-for="MentorId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Department" class="form-label font-weight-bold">Department</label>
+                        <input asp-for="Department" class="form-control rounded-pill" placeholder="Enter department name" />
+                        <span asp-validation-for="Department" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Branch" class="form-label font-weight-bold">Branch</label>
+                        <input asp-for="Branch" class="form-control rounded-pill" placeholder="Enter branch location" />
+                        <span asp-validation-for="Branch" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        <label asp-for="DurationMonths" class="form-label font-weight-bold">Duration (Months)</label>
+                        <input asp-for="DurationMonths" class="form-control rounded-pill" placeholder="Enter duration in months" />
+                        <span asp-validation-for="DurationMonths" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary px-4 rounded-pill">Save Changes</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 rounded-pill">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
